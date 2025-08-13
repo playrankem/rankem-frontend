@@ -1,0 +1,7 @@
+/* Tailwind (if you used the create-next-app Tailwind template) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Your global tweaks */
+html, body { height: 100%; }
