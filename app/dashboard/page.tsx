@@ -2,7 +2,8 @@
 import AuthGuard from "@/components/AuthGuard";
 import { useFetch } from "@/lib/useFetch";
 import { api } from "@/lib/api";
-import { Button, Card, CardContent, Container, Grid, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
+import { Button, Card, CardContent, Container, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import Link from "next/link";
 import type { Profile, Notification, League } from "@/lib/types";
 import type { AxiosError } from "axios";
@@ -40,7 +41,7 @@ export default function Dashboard() {
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Card>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
@@ -58,7 +59,7 @@ export default function Dashboard() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Card>
               <CardContent>
                 <Typography variant="h6" mb={2}>Notifications</Typography>
