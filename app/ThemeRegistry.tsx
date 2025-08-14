@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import { useServerInsertedHTML } from "next/navigation";
-import createCache, { EmotionCache, SerializedStyles } from "@emotion/cache";
+import createCache, { EmotionCache } from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
+import type { SerializedStyles } from "@emotion/serialize";
+import type { StyleSheet } from "@emotion/sheet"; // ✅ correct type
 
 type InsertFn = EmotionCache["insert"];
 
@@ -15,17 +17,16 @@ export default function ThemeRegistry({ children }: { children: React.ReactNode 
     const inserted: string[] = [];
     const originalInsert: InsertFn = cache.insert;
 
-    // Fully typed override with no `any`
-    cache.insert = function (
+    cache.insert = (
       selector: string,
       serialized: SerializedStyles,
-      sheet: unknown,
+      sheet: StyleSheet,            // ✅ fixed type
       shouldCache: boolean
-    ): string | void {
+    ): string | void => {
       if (!cache.inserted[serialized.name]) {
         inserted.push(serialized.name);
       }
-      return originalInsert.call(cache, selector, serialized, sheet, shouldCache);
+      return originalInsert(selector, serialized, sheet, shouldCache);
     };
 
     const flush = (): string[] => {
