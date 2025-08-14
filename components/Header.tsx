@@ -11,7 +11,7 @@ export default function Header() {
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>AP Poll Guess</Typography>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>RankEm</Typography>
         <Stack direction="row" spacing={2} alignItems="center">
           {username ? (
             <>
