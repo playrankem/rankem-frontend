@@ -7,6 +7,7 @@ import { Button, Container, TextField, Typography, Stack, Alert } from "@mui/mat
 import { useState } from "react";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import type { AxiosError } from "axios";
 
 type FormData = z.infer<typeof registerSchema>;
 
@@ -17,10 +18,11 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await api.post("/accounts", data);
+      await api.accounts.post("/accounts", data);
       router.replace("/login");
-    } catch (e: any) {
-      setError(e?.response?.data?.message ?? "Registration failed");
+    } catch (e: unknown) {
+      const err = e as AxiosError<{ message?: string }>;
+      setError(err.response?.data?.message ?? "Registration failed");
     }
   };
 

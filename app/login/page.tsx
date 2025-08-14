@@ -8,11 +8,14 @@ import { Button, Container, TextField, Typography, Stack, Alert } from "@mui/mat
 import { useState } from "react";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import type { AxiosError } from "axios";
 
 type FormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(loginSchema) });
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+    resolver: zodResolver(loginSchema),
+  });
   const [error, setError] = useState<string | null>(null);
   const setAuth = useAuth((s) => s.setAuth);
   const router = useRouter();
@@ -20,13 +23,17 @@ export default function LoginPage() {
   const onSubmit = async (data: FormData) => {
     setError(null);
     try {
-      const res = await api.post("/accounts/account/login", data);
-      const token = (res.data as any).jwt || (res.data as any).token;
-      const profile = await api.get("/accounts/account/profile");
+      const res = await api.accounts.post("/accounts/account/login", data);
+      const token = (res.data as { jwt?: string; token?: string }).jwt ?? res.data.token;
+      const profile = await api.accounts.get(
+        "/accounts/account/profile",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       setAuth(token, profile.data.username);
       router.replace("/dashboard");
-    } catch (e: any) {
-      setError(e?.response?.data?.message ?? "Login failed");
+    } catch (e: unknown) {
+      const err = e as AxiosError<{ message?: string }>;
+      setError(err.response?.data?.message ?? "Login failed");
     }
   };
 

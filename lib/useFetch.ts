@@ -2,7 +2,10 @@
 import useSWR from "swr";
 import { api } from "./api";
 
-const fetcher = (url: string) => api.get(url).then(r => r.data);
-export function useFetch<T = any>(url: string | null) {
-  return useSWR<T>(url, (u) => fetcher(u));
+export function useFetch<T = unknown>(service: keyof typeof api, url: string | null) {
+  return useSWR<T>(
+    url ? [service, url] as const : null,
+    ([svc, u]: [keyof typeof api, string]) =>
+      api[svc].get(u).then((r) => r.data)
+  );
 }
