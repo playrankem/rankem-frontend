@@ -9,8 +9,10 @@ import type { Profile, Notification, League } from "@/lib/types";
 import type { AxiosError } from "axios";
 
 export default function Dashboard() {
-  const { data: profile } = useFetch<Profile>("accounts", "/account/profile");
-  const { data: notifications, mutate: refetchNotifs } = useFetch<Notification[]>("notifications", "/");
+  const { data: profile } = useFetch<Profile>("accounts", "/accounts/account/profile");
+  const { data, mutate: refetchNotifs } = useFetch<{ notifications: Notification[] }>("notifications", "/notifications");
+  const notifications = data?.notifications ?? [];
+
   const { data: leagues } = useFetch<League[]>("leagues", "/mine"); // assumes you've added this endpoint
 
   const acceptInvite = async (id: string) => {
@@ -25,7 +27,7 @@ export default function Dashboard() {
 
   const deleteNotif = async (id: string) => {
     try {
-      await api.notifications.delete(`/${id}`);
+      await api.notifications.delete(`/notifications/${id}`);
       await refetchNotifs();
     } catch (e: unknown) {
       const err = e as AxiosError<{ message?: string }>;
