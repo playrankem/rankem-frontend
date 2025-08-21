@@ -49,8 +49,8 @@ export default function Home() {
         <Typography variant="h6" color="text.secondary" gutterBottom>
           RankEm is my open‑source fantasy app where users predict AP Top 25 polls
           before they drop and compete with friends in private leagues.
-          The app is currently in early development with a focus on the CFB AP Poll. However, I plan to expand to other sports in the future.
-          Additionally, I plan to add more features such as gathering personal polls from users to create a sort of &lsquo;People&apos;s Top 25&rsquo and more.
+          The app is currently in early development with a focus on the CFB AP Poll. However, I plan to expand to other sports in the future. 
+          Additionally, I plan to add more features such as gathering personal polls from users to create a sort of &quot;People&apos;s Top 25&quot; and more.
         </Typography>
 
         <Stack direction="row" spacing={2} sx={{ mt: 3 }} useFlexGap flexWrap="wrap">
